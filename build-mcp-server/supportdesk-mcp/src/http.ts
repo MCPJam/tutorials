@@ -2,8 +2,9 @@
 import { createMcpHandler, requireBearerAuth, hostHeaderValidationResponse } from "@modelcontextprotocol/server";
 import { createServer } from "./server.js";
 
-const server = createServer();
-const mcpHandler = createMcpHandler(() => server, { legacy: "reject" });
+// createMcpHandler calls this factory for each HTTP request, so return a fresh
+// McpServer instance. Shared app dependencies should live outside this factory.
+const mcpHandler = createMcpHandler(() => createServer(), { legacy: "reject" });
 
 const mockTokenVerifier = {
   async verifyAccessToken(token: string) {
