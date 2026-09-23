@@ -14,8 +14,8 @@ export interface AppContext {
   };
 }
 
-function scopesFromContext(context: AppContext | undefined) {
-  return context?.http?.authInfo?.scopes ?? context?.authInfo?.scopes ?? [];
+function scopesFromContext(context: AppContext | undefined): string[] | undefined {
+  return context?.http?.authInfo?.scopes ?? context?.authInfo?.scopes;
 }
 
 export function createServer() {
@@ -80,8 +80,10 @@ export function createServer() {
       }
     },
     async (args, context: AppContext) => {
-      // Extract the authentication context and explicitly check for write privileges
-      if (!scopesFromContext(context).includes("tickets:write")) {
+      // HTTP attaches a bearer token. Stdio does not, so local Inspector runs can
+      // exercise the write. A present token must include tickets:write.
+      const scopes = scopesFromContext(context);
+      if (scopes !== undefined && !scopes.includes("tickets:write")) {
         throw new Error("Unauthorized: tickets:write scope is missing.");
       }
 
