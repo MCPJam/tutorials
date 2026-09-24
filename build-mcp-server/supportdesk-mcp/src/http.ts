@@ -8,8 +8,8 @@ const mcpHandler = createMcpHandler(() => createServer(), { legacy: "reject" });
 
 const mockTokenVerifier = {
   async verifyAccessToken(token: string) {
-    // Generate a strictly required expiration date (1 hour from now)
-    const expiresAt = Date.now() + 3600000;
+    // Expires 1 hour from now. The SDK expects seconds since epoch, not milliseconds.
+    const expiresAt = Math.floor(Date.now() / 1000) + 3600;
 
     if (token === "dev-read-token") {
       return { scopes: ["tickets:read"], expiresAt, token, clientId: "mock-client" };
