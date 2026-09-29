@@ -27,7 +27,7 @@ Tasks live in memory, so any change is lost when the server restarts.
 
 ## Getting started
 
-Requires Node.js 20+.
+Requires Node.js 22+.
 
 1. Build the widget. The server reads `web/dist/component.js`, so do this first:
 
