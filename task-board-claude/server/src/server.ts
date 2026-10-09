@@ -54,7 +54,7 @@ export function createServer() {
       );
       return {
         structuredContent: { tasks: result },
-        content: [{ type: "text", text: `Found ${result.length} tasks.` }],
+        content: [{ type: "text", text: JSON.stringify({ tasks: result }) }],
       };
     }
   );
@@ -84,7 +84,10 @@ export function createServer() {
       task.done = true;
       return {
         structuredContent: { tasks },
-        content: [{ type: "text", text: `Marked "${task.title}" as done.` }],
+        content: [
+          { type: "text", text: `Marked "${task.title}" as done.` },
+          { type: "text", text: JSON.stringify({ tasks }) },
+        ],
       };
     }
   );
