@@ -32,5 +32,5 @@ app.post(
 );
 
 app.listen(3000, () => {
-  console.log("Task board MCP server: http://localhost:3000/mcp");
+  console.log("Task board MCP server: http://127.0.0.1:3000/mcp");
 });

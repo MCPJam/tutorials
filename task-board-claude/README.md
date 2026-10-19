@@ -45,7 +45,7 @@ Requires Node.js 22+.
    npm start
    ```
 
-   The MCP endpoint is at `http://localhost:3000/mcp`.
+   The MCP endpoint is at `http://127.0.0.1:3000/mcp`.
 
 3. Test it with [MCPJam](https://github.com/MCPJam/inspector), which emulates the Claude client locally, so you don't need a tunnel or a Claude account:
 
@@ -53,7 +53,7 @@ Requires Node.js 22+.
    npx @mcpjam/inspector@latest
    ```
 
-   Add an HTTP server at `http://localhost:3000/mcp`, then invoke `show_task_board` from the Playground to render the app.
+   Add an HTTP server at `http://127.0.0.1:3000/mcp`, then invoke `show_task_board` from the Playground to render the app.
 
    To run it inside Claude itself, either point Claude Desktop at the local server through `mcp-remote` (no public URL needed), or expose it with a tunnel and add it as a custom connector in claude.ai.
 
