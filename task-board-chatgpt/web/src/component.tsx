@@ -1,5 +1,6 @@
-// Task board UI component. Renders tool results delivered over the MCP Apps
-// bridge (JSON-RPC over postMessage), calls complete_task via tools/call, and
+// Task board UI component. Completes the MCP Apps ui/initialize handshake,
+// renders tool results delivered over the MCP Apps bridge (JSON-RPC over
+// postMessage), calls complete_task via tools/call, and
 // keeps the selected row in ChatGPT widget state when available.
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -54,6 +55,20 @@ function useToolResult() {
   const [result, setResult] = useState<ToolResult>(null);
   useEffect(() => {
     listeners.add(setResult);
+    // MCP Apps handshake: the host sends tool input and results only after
+    // `initialized`, so subscribe first to avoid missing the first result.
+    request("ui/initialize", {
+      protocolVersion: "2026-01-26",
+      appInfo: { name: "task-board", version: "1.0.0" },
+      appCapabilities: {},
+    })
+      .then(() =>
+        window.parent.postMessage(
+          { jsonrpc: "2.0", method: "ui/notifications/initialized", params: {} },
+          "*"
+        )
+      )
+      .catch((error) => console.error("MCP Apps handshake failed", error));
     return () => {
       listeners.delete(setResult);
     };
